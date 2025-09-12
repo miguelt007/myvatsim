@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Voo - VATSIM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #555;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #777;
+        }
+        .error {
+            color: #d9534f;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Planos de Voo</h1>
+        <div id="flightplans-container" class="loading">
+            Carregando dados...
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://api.vatsim.net/v2/members/810570/flightplans';
+
+        async function fetchFlightPlans() {
+            const container = document.getElementById('flightplans-container');
+            container.innerHTML = '<div class="loading">Carregando dados...</div>';
+
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar os dados: ' + response.statusText);
+                }
+                const data = await response.json();
+                
+                if (data.length === 0) {
+                    container.innerHTML = '<p>Nenhum plano de voo encontrado.</p>';
+                    return;
+                }
+
+                // Cria a tabela
+                let tableHTML = '<table><thead><tr><th>Callsign</th><th>Partida</th><th>Chegada</th><th>Aeronave</th><th>Rota</th></tr></thead><tbody>';
+
+                data.forEach(flightplan => {
+                    tableHTML += `
+                        <tr>
+                            <td>${flightplan.callsign || 'N/A'}</td>
+                            <td>${flightplan.departure || 'N/A'}</td>
+                            <td>${flightplan.arrival || 'N/A'}</td>
+                            <td>${flightplan.aircraft_short || 'N/A'}</td>
+                            <td>${flightplan.route || 'N/A'}</td>
+                        </tr>
+                    `;
+                });
+
+                tableHTML += '</tbody></table>';
+                container.innerHTML = tableHTML;
+
+            } catch (error) {
+                console.error("Erro ao buscar planos de voo:", error);
+                container.innerHTML = `<div class="error">Falha ao carregar os dados. Por favor, tente novamente mais tarde.</div>`;
+            }
+        }
+
+        fetchFlightPlans();
+    </script>
+</body>
+</html>
