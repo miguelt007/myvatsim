@@ -22,6 +22,16 @@
             text-align: center;
             color: #333;
         }
+        button {
+            display: block;
+            margin: 10px auto 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -50,6 +60,21 @@
             font-weight: bold;
         }
         
+        /* Indicador de Carregamento */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, .1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            animation: spin 1s ease infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Layout para Telemóvel (ecrãs até 600px de largura) */
         @media only screen and (max-width: 600px) {
             table, thead, tbody, th, td, tr {
@@ -90,9 +115,9 @@
 <body>
     <div class="container">
         <h1>Planos de Voo</h1>
-        <div id="flightplans-container" class="loading">
-            Carregando dados...
-        </div>
+        <button onclick="fetchFlightPlans()">Atualizar Voos</button>
+        <div id="flightplans-container">
+            </div>
     </div>
 
     <script>
@@ -100,7 +125,7 @@
 
         async function fetchFlightPlans() {
             const container = document.getElementById('flightplans-container');
-            container.innerHTML = '<div class="loading">Carregando dados...</div>';
+            container.innerHTML = '<div class="spinner"></div><div class="loading">Carregando dados...</div>';
 
             try {
                 const response = await fetch(API_URL);
@@ -156,7 +181,11 @@
             }
         }
 
+        // Carrega os dados na primeira vez que a página é aberta
         fetchFlightPlans();
+
+        // Atualiza a cada 5 minutos
+        setInterval(fetchFlightPlans, 300000);
     </script>
 </body>
 </html>
