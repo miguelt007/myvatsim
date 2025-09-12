@@ -79,7 +79,22 @@
                 }
 
                 // Cria a tabela
-                let tableHTML = '<table><thead><tr><th>Callsign</th><th>Partida</th><th>Chegada</th><th>Aeronave</th><th>Rota</th></tr></thead><tbody>';
+                let tableHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Callsign</th>
+                                <th>Partida</th>
+                                <th>Chegada</th>
+                                <th>Aeronave</th>
+                                <th>Tipo</th>
+                                <th>Altitude</th>
+                                <th>Hora Dep.</th>
+                                <th>Rota</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
 
                 data.forEach(flightplan => {
                     tableHTML += `
@@ -88,6 +103,9 @@
                             <td>${flightplan.dep || 'N/A'}</td>
                             <td>${flightplan.arr || 'N/A'}</td>
                             <td>${flightplan.aircraft || 'N/A'}</td>
+                            <td>${flightplan.flight_type || 'N/A'}</td>
+                            <td>${flightplan.altitude || 'N/A'}</td>
+                            <td>${flightplan.deptime || 'N/A'}</td>
                             <td>${flightplan.route || 'N/A'}</td>
                         </tr>
                     `;
