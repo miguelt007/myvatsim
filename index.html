@@ -49,6 +49,42 @@
             text-align: center;
             font-weight: bold;
         }
+        
+        /* Layout para Telemóvel (ecrãs até 600px de largura) */
+        @media only screen and (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 15px;
+                border-radius: 8px;
+            }
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+                text-align: left;
+            }
+            td:before {
+                position: absolute;
+                top: 50%;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                content: attr(data-label);
+                transform: translateY(-50%);
+                font-weight: bold;
+                color: #555;
+            }
+        }
     </style>
 </head>
 <body>
@@ -99,14 +135,14 @@
                 data.forEach(flightplan => {
                     tableHTML += `
                         <tr>
-                            <td>${flightplan.callsign || 'N/A'}</td>
-                            <td>${flightplan.dep || 'N/A'}</td>
-                            <td>${flightplan.arr || 'N/A'}</td>
-                            <td>${flightplan.aircraft || 'N/A'}</td>
-                            <td>${flightplan.flight_type || 'N/A'}</td>
-                            <td>${flightplan.altitude || 'N/A'}</td>
-                            <td>${flightplan.deptime || 'N/A'}</td>
-                            <td>${flightplan.route || 'N/A'}</td>
+                            <td data-label="Callsign">${flightplan.callsign || 'N/A'}</td>
+                            <td data-label="Partida">${flightplan.dep || 'N/A'}</td>
+                            <td data-label="Chegada">${flightplan.arr || 'N/A'}</td>
+                            <td data-label="Aeronave">${flightplan.aircraft || 'N/A'}</td>
+                            <td data-label="Tipo">${flightplan.flight_type || 'N/A'}</td>
+                            <td data-label="Altitude">${flightplan.altitude || 'N/A'}</td>
+                            <td data-label="Hora Dep.">${flightplan.deptime || 'N/A'}</td>
+                            <td data-label="Rota">${flightplan.route || 'N/A'}</td>
                         </tr>
                     `;
                 });
