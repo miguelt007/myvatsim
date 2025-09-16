@@ -144,6 +144,7 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>Data/Hora</th>
                                 <th>Callsign</th>
                                 <th>Partida</th>
                                 <th>Chegada</th>
@@ -160,6 +161,7 @@
                 data.forEach(flightplan => {
                     tableHTML += `
                         <tr>
+                            <td data-label="filed">${flightplan.filed || 'N/A'}</td>
                             <td data-label="Callsign">${flightplan.callsign || 'N/A'}</td>
                             <td data-label="Partida">${flightplan.dep || 'N/A'}</td>
                             <td data-label="Chegada">${flightplan.arr || 'N/A'}</td>
